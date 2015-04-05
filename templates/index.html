@@ -1,0 +1,62 @@
+<html>
+<head>
+    <title>Core API Assault Battery</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script language="JavaScript">
+
+        function move(dir) {
+            var path = '/unknown';
+            if (dir == 'LEFT') {
+                path = '/left';
+            } else if (dir == 'RIGHT') {
+                path = '/right'
+            } else if (dir == 'UP') {
+                path = '/up'
+            } else if (dir == 'DOWN') {
+                path = '/down'
+            } else if (dir == 'FIRE') {
+                path = '/fire'
+            }
+
+            $.ajax(path, {
+                success: function (data) {
+                    if (console) {
+                        console.log('moved ' + path);
+                    }
+                },
+                error: function () {
+                    if (console) {
+                        console.log("error!")
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function(){
+            var image = "<img src='http://"+window.location.hostname+":8081/' width='512' height='288'/>"
+            $('#stream').html(image)
+        });
+    </script>
+</head>
+<body>
+<div id="stream"></div>
+
+<table>
+    <tr>
+        <td></td>
+        <td><a href="#" onclick="move('UP')">up</a></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><a href="#" onclick="move('LEFT')">left</a></td>
+        <td><a href="#" onclick="move('FIRE')">fire</a></td>
+        <td><a href="#" onclick="move('RIGHT')">right</a></td>
+    </tr>
+    <tr>
+        <td>
+        <td><a href="#" onclick="move('DOWN')">down</a></td>
+        <td></td>
+    </tr>
+</table>
+</body>
+</html>
