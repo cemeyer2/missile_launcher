@@ -32,15 +32,61 @@
             });
         }
 
-        $(document).ready(function(){
-            var image = "<img src='http://"+window.location.hostname+":8081/' width='512' height='288'/>"
+        $(document).ready(function () {
+            var image = "<img src='http://" + window.location.hostname + ":8081/' class='imageBack'/><img src='/images/reticle.png' class='imageTop'/>"
             $('#stream').html(image)
         });
+
+        $(document).keydown(function (e) {
+            switch (e.which) {
+                case 37: // left
+                    move('LEFT');
+                    break;
+
+                case 38: // up
+                    move('UP');
+                    break;
+
+                case 39: // right
+                    move('RIGHT');
+                    break;
+
+                case 40: // down
+                    move('DOWN');
+                    break;
+
+                case 32:
+                    move('FIRE');
+                    break;
+                default:
+                    return; // exit this handler for other keys
+            }
+            e.preventDefault(); // prevent the default action (scroll / move caret)
+        });
     </script>
+    <style>
+        .imageBack {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 512px;
+            height: 288px;
+        }
+
+        .imageTop {
+            position: absolute;
+            top: 10px;
+            left: 112px;
+        }
+    </style>
 </head>
 <body>
 <div id="stream"></div>
-
+<br/>
+<br/>
+use arrow keys to target, space to fire
+<br/>
+<br/>
 <table>
     <tr>
         <td></td>

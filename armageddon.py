@@ -1,5 +1,6 @@
 import platform
 import time
+
 import usb.core
 import usb.util
 
@@ -49,7 +50,7 @@ class Armageddon(object):
             self.DEVICE.ctrl_transfer(0x21, 0x09, 0x0200, 0,
                                       [cmd])
 
-    def send_move(self, cmd, delay=.200):
+    def send_move(self, cmd, delay=.100):
         self.send_cmd(cmd)
         time.sleep(delay)
         self.send_cmd(self.STOP)

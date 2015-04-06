@@ -1,7 +1,32 @@
+import os
+
 import cherrypy
-from mako.template import Template
 from mako.lookup import TemplateLookup
+
 from armageddon import Armageddon
+
+
+USERS = {'coreapi': 'coreapi'}
+
+
+def validate_password(realm, username, password):
+    if username in USERS and USERS[username] == password:
+        return True
+    return False
+
+
+conf = {
+    '/': {
+        'tools.auth_basic.on': True,
+        'tools.auth_basic.realm': 'missile launcher',
+        'tools.auth_basic.checkpassword': validate_password,
+        'tools.staticdir.root': os.path.dirname(os.path.realpath(__file__))
+    },
+    '/images': {
+        'tools.staticdir.on': True,
+        'tools.staticdir.dir': 'images'
+    }
+}
 
 armageddon = Armageddon()
 
@@ -9,6 +34,7 @@ lookup = TemplateLookup(directories=['templates'])
 
 cherrypy.server.socket_host = '0.0.0.0'
 cherrypy.server.socket_port = 80
+
 
 class MissileLauncher:
     @cherrypy.expose
@@ -36,5 +62,6 @@ class MissileLauncher:
     def fire(self):
         armageddon.send_move(armageddon.FIRE, 3)
 
+
 if __name__ == '__main__':
-    cherrypy.quickstart(MissileLauncher())
+    cherrypy.quickstart(MissileLauncher(), '/', conf)
